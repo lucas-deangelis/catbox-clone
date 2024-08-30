@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=ubuntu
-ExecStart=/home/ubuntu/catbox-clone
+ExecStart=/home/ubuntu/catbox-clone/catbox-clone
 Restart=on-failure
 WorkingDirectory=/home/ubuntu/catbox-clone
 RestartSec=5s
