@@ -45,6 +45,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Create the "files" directory at start
+	if err := os.MkdirAll("files", os.ModePerm); err != nil {
+		fmt.Println("Error creating 'files' directory:", err)
+		os.Exit(1)
+	}
+
 	http.HandleFunc("POST /", authMiddleware(uploadHandler, cfg))
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("GET /{file}", fileHandler)
@@ -72,7 +78,9 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func fileHandler(w http.ResponseWriter, r *http.Request) {
 	fileName := r.PathValue("file")
-	content, err := os.ReadFile(fileName)
+	filePath := fmt.Sprintf("files/%s", fileName)
+	fmt.Printf("Reading file %s", filePath)
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		http.Error(w, "File not found", http.StatusNotFound)
 		return
@@ -91,8 +99,12 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// Create a new file in the current directory
-	dst, err := os.Create(header.Filename)
+	// Create a new file in the files directory
+	if err := os.MkdirAll("files", os.ModePerm); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	dst, err := os.Create(fmt.Sprintf("files/%s", header.Filename))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

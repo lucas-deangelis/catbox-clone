@@ -1,0 +1,8 @@
+# Config file with username and password
+config.json
+
+# Executable
+catbox-clone
+
+# Files folder
+files/
