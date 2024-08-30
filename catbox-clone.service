@@ -1,0 +1,14 @@
+[Unit]
+Description=Accepts file upload (protected by HTTP basic auth), serves files.
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+ExecStart=/home/ubuntu/catbox-clone
+Restart=on-failure
+WorkingDirectory=/home/ubuntu/catbox-clone
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
