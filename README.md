@@ -10,8 +10,8 @@ Needs a `config.json` with the username and password like so:
 
 ```json
 {
-		"username": "admin",
-		"password": "password"
+	"username": "admin",
+	"password": "password"
 }
 ```
 
